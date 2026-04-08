@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design MD Author"
+  short_description: "Create and maintain DESIGN.md style entries"
+  default_prompt: "Create or update a design-md style pack with complete DESIGN.md, README, and preview files, then validate repository consistency."

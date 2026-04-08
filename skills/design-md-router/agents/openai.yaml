@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design MD Router"
+  short_description: "Recommend and apply DESIGN.md styles from this repository"
+  default_prompt: "Recommend the best DESIGN.md profiles for this product request, then apply the selected one to the target project."

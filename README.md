@@ -73,6 +73,49 @@ Each site includes:
 1. Copy a site's `DESIGN.md` into your project root
 2. Tell your AI agent to use it.
 
+### Use as a Skill
+
+This repository now includes two reusable skills:
+
+- `skills/design-md-router`: recommend and apply existing styles.
+- `skills/design-md-author`: create or maintain style folders.
+
+Quick commands:
+
+```bash
+# router: list styles
+bash skills/design-md-router/scripts/list_styles.sh
+
+# router: recommend styles from a request
+python3 skills/design-md-router/scripts/recommend_style.py "minimal dark developer landing page" --top 5
+
+# router: apply a style into another project directory
+bash skills/design-md-router/scripts/apply_style.sh vercel /path/to/your/project --include-preview
+
+# router: validate library integrity
+bash skills/design-md-router/scripts/validate_library.sh
+
+# author: scaffold a new style pack (preview only)
+bash skills/design-md-author/scripts/init_style.sh acme --name "Acme" --url "https://acme.com" --category "Developer Tools & Platforms" --dry-run
+
+# author: sync README badge count from actual design-md folder count
+python3 skills/design-md-author/scripts/update_design_count.py
+```
+
+Standalone skill install (without this full repo):
+
+```bash
+# recommended explicit mode
+export DESIGN_MD_ROOT="/absolute/path/to/design-md"
+export DESIGN_MD_README="/absolute/path/to/README.md"
+
+# or zero-config mode: let scripts auto-bootstrap into cache
+# default cache root: ${CODEX_HOME:-$HOME/.codex}/data/awesome-design-md
+export DESIGN_MD_AUTO_FETCH=1
+# optional override
+export DESIGN_MD_CACHE_ROOT="$HOME/.codex/data/awesome-design-md"
+```
+
 
 ## Request a DESIGN.md
 
