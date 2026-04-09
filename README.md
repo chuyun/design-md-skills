@@ -105,11 +105,13 @@ python3 skills/design-md-author/scripts/update_design_count.py
 Standalone skill install (without this full repo):
 
 ```bash
-# recommended explicit mode
+# default: bundled dataset is already packaged inside each skill (offline-ready)
+
+# optional explicit mode
 export DESIGN_MD_ROOT="/absolute/path/to/design-md"
 export DESIGN_MD_README="/absolute/path/to/README.md"
 
-# or zero-config mode: let scripts auto-bootstrap into cache
+# fallback mode: let scripts auto-bootstrap into cache if bundled data is unavailable
 # default cache root: ${CODEX_HOME:-$HOME/.codex}/data/awesome-design-md
 export DESIGN_MD_AUTO_FETCH=1
 # optional override

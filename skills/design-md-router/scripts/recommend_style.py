@@ -210,11 +210,17 @@ def bootstrap_cache_repo(cache_root: Path, repo_url: str, repo_ref: str) -> None
     if design_root.exists():
         return
 
-    if (cache_root / ".git").exists():
+    def set_sparse_targets() -> None:
         try:
-            run_git(["git", "sparse-checkout", "set", "design-md", "README.md"], cwd=cache_root)
+            run_git(
+                ["git", "sparse-checkout", "set", "--skip-checks", "design-md", "README.md"],
+                cwd=cache_root,
+            )
         except subprocess.CalledProcessError:
-            pass
+            run_git(["git", "sparse-checkout", "set", "design-md"], cwd=cache_root)
+
+    if (cache_root / ".git").exists():
+        set_sparse_targets()
         run_git(["git", "fetch", "--depth", "1", "origin", repo_ref], cwd=cache_root)
         run_git(["git", "checkout", "-q", "FETCH_HEAD"], cwd=cache_root)
     else:
@@ -237,7 +243,7 @@ def bootstrap_cache_repo(cache_root: Path, repo_url: str, repo_ref: str) -> None
                 str(cache_root),
             ]
         )
-        run_git(["git", "sparse-checkout", "set", "design-md", "README.md"], cwd=cache_root)
+        set_sparse_targets()
         if repo_ref != "main":
             run_git(["git", "fetch", "--depth", "1", "origin", repo_ref], cwd=cache_root)
             run_git(["git", "checkout", "-q", "FETCH_HEAD"], cwd=cache_root)
@@ -257,6 +263,10 @@ def resolve_design_root(script_dir: Path) -> Path:
     local_root = (script_dir.parents[2] / "design-md").resolve()
     if local_root.exists():
         return local_root
+
+    bundled_root = (script_dir.parent / "assets" / "design-md").resolve()
+    if bundled_root.exists():
+        return bundled_root
 
     default_cache_root = Path(os.getenv("CODEX_HOME", str(Path.home() / ".codex"))) / "data" / "awesome-design-md"
     cache_root = Path(os.getenv("DESIGN_MD_CACHE_ROOT", str(default_cache_root))).expanduser().resolve()
@@ -288,6 +298,10 @@ def resolve_readme_path(design_root: Path, script_dir: Path) -> Path | None:
     candidate = (design_root.parent / "README.md").resolve()
     if candidate.exists():
         return candidate
+
+    bundled_readme = (script_dir.parent / "assets" / "README.md").resolve()
+    if bundled_readme.exists():
+        return bundled_readme
 
     fallback = (script_dir.parents[2] / "README.md").resolve()
     if fallback.exists():

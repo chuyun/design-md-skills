@@ -4,10 +4,17 @@ description: Author or maintain DESIGN.md style packs in this repository. Use wh
 ---
 
 Use this skill to create and maintain style entries in the `design-md/` collection.
+By default, this skill includes a bundled `design-md` dataset under `assets/` for offline use.
 
 ## External Data Source
 
-When this skill is installed outside this repository, set:
+Resolution order:
+1. `DESIGN_MD_ROOT`
+2. Repository-local `design-md/`
+3. Bundled `assets/design-md` (default packaged dataset)
+4. Auto-fetched cache
+
+When this skill is installed outside this repository, you can still set:
 - `DESIGN_MD_ROOT`: absolute path to your shared `design-md/` directory.
 - `DESIGN_MD_README` (optional): absolute path to the catalog `README.md` used for badge sync.
 
